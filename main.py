@@ -48,7 +48,7 @@ def get_server_vk(token_vk):
     return response.json()['response']['upload_url']
 
 
-def file_upload_vk(token_vk, filename):
+def upload_file_vk(token_vk, filename):
     url = get_server_vk(token_vk)
     with open(f"{filename}", "rb") as file:
         files = {
@@ -105,7 +105,7 @@ def main():
     group_id = os.getenv('GROUP_ID')
     comment, filename, image_link = get_xkcd()
     save_image(image_link, filename)
-    photo, hash, server = file_upload_vk(token_vk, filename)
+    photo, hash, server = upload_file_vk(token_vk, filename)
     owner_id, photo_id = save_file_vk(token_vk, photo, hash, server, user_id)
     publish_image_vk(comment, token_vk, photo_id, owner_id, group_id)
     delete_files()
