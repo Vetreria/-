@@ -37,7 +37,7 @@ def save_image(image_link, filename):
         file.write(response.content)
 
 
-def get_server_vk(token_vk):
+def get_upload_url(token_vk):
     response = requests.get("https://api.vk.com/method/photos.getWallUploadServer", 
     params={ 
         "v":5.131, 
@@ -49,7 +49,7 @@ def get_server_vk(token_vk):
 
 
 def upload_file_vk(token_vk, filename):
-    url = get_server_vk(token_vk)
+    url = get_upload_url(token_vk)
     with open(f"{filename}", "rb") as file:
         files = {
         'file1': file
