@@ -17,17 +17,17 @@ def get_xkcd():
     response_last = requests.get(
         "https://xkcd.com/info.0.json")
     response_last.raise_for_status()
-    response_json_last = response_last.json()
-    last_xkcd = response_json_last['num']
+    response_data_last = response_last.json()
+    last_xkcd = response_data_last['num']
     random_num = random.randint(1, last_xkcd)
     response = requests.get(
         f"https://xkcd.com/{random_num}/info.0.json"
     )
     response.raise_for_status()
-    response_json = response.json()
-    image_link = response_json.get('img')
+    response_data = response.json()
+    image_link = response_data.get('img')
     file_ext = get_file_ext(image_link)
-    return response_json.get('alt'), f"images/xkcd{response_json.get('num')}{file_ext}", image_link
+    return response_data.get('alt'), f"images/xkcd{response_data.get('num')}{file_ext}", image_link
 
 
 def save_image(image_link, filename):
