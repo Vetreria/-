@@ -60,11 +60,11 @@ def upload_file_vk(token_vk, filename):
         return result['photo'], result['hash'], result['server']
 
 
-def save_file_vk(token_vk, photo, hash, server, user_id):
+def save_file_vk(token_vk, photo, file_hash, server, user_id):
     url = "https://api.vk.com/method/photos.saveWallPhoto"
     params = {
         'photo': photo,
-        'hash': hash,
+        'hash': file_hash,
         'server': server,
         'user_id': user_id,
         "v":5.131, 
@@ -92,8 +92,8 @@ def publish_image_vk(comment, token_vk, photo_id, owner_id, group_id):
 
 
 def delete_files():
-    filelist = listdir("images")
-    for f in filelist:
+    file_dir = listdir("images")
+    for f in file_dir:
         os.remove(os.path.join("images", f))
 
 
@@ -105,8 +105,8 @@ def main():
     group_id = os.getenv('GROUP_ID')
     comment, filename, image_link = get_xkcd()
     save_image(image_link, filename)
-    photo, hash, server = upload_file_vk(token_vk, filename)
-    owner_id, photo_id = save_file_vk(token_vk, photo, hash, server, user_id)
+    photo, file_hash, server = upload_file_vk(token_vk, filename)
+    owner_id, photo_id = save_file_vk(token_vk, photo, file_hash, server, user_id)
     publish_image_vk(comment, token_vk, photo_id, owner_id, group_id)
     delete_files()
 
