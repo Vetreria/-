@@ -25,13 +25,13 @@ def get_xkcd():
     )
     response.raise_for_status()
     response_json = response.json()
-    image_links = response_json.get('img')
-    file_ext = get_file_ext(image_links)
-    return response_json.get('alt'), f"images/xkcd{response_json.get('num')}{file_ext}", image_links
+    image_link = response_json.get('img')
+    file_ext = get_file_ext(image_link)
+    return response_json.get('alt'), f"images/xkcd{response_json.get('num')}{file_ext}", image_link
 
 
-def save_images(image_links, filename):
-    response = requests.get(image_links)
+def save_image(image_link, filename):
+    response = requests.get(image_link)
     response.raise_for_status()
     with open(filename, "wb") as file:
         file.write(response.content)
@@ -103,8 +103,8 @@ def main():
     token_vk = os.getenv('VK_TOKEN')
     user_id = os.getenv('USER_ID')
     group_id = os.getenv('GROUP_ID')
-    comment, filename, image_links = get_xkcd()
-    save_images(image_links, filename)
+    comment, filename, image_link = get_xkcd()
+    save_image(image_link, filename)
     photo, hash, server = file_upload_vk(token_vk, filename)
     owner_id, photo_id = save_file_vk(token_vk, photo, hash, server, user_id)
     publish_image_vk(comment, token_vk, photo_id, owner_id, group_id)
